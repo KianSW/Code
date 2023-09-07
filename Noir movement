@@ -1,0 +1,79 @@
+using System.Collections;
+
+using System.Collections.Generic;
+
+using UnityEngine;
+
+
+
+public class PlayerControl : MonoBehaviour
+{
+    public Movement controller;
+
+    public float defaultSpeed = 40f;
+
+    float runSpeed = 40f;
+
+    public float slideSpeed = 100f;
+
+    float horizontalMove = 0f;
+
+    bool jump = false;
+    bool crouch = false;
+
+
+    void Start ()
+    {
+        runSpeed = defaultSpeed;
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            jump = true;
+
+        }
+        if(Input.GetButtonDown("Crouch"))
+        {
+            if(horizontalMove != 0f)
+            {
+                Debug.Log("Sliding");
+                crouch = true;
+                runSpeed = slideSpeed;
+                Invoke("reset", 1);
+            }
+            else
+            {
+                crouch = true;
+                Debug.Log("Crouching");
+            }
+        }
+        else if(Input.GetButtonUp("Crouch"))
+        {
+            crouch = false;
+            runSpeed = defaultSpeed;
+        }
+
+    }
+
+    void FixedUpdate()
+    {
+        controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+
+        jump = false;
+    }
+
+    void reset()
+    {
+        if(crouch == true)
+        {
+            runSpeed = defaultSpeed;
+            Debug.Log("Reset");
+        }
+    }
+}
