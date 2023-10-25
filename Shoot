@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Shoot : MonoBehaviour
+{
+    public Transform shootingPoint;
+    public GameObject bulletPrefab;
+    public GameObject Gun;
+
+    void Update()
+    {
+        if (Input.GetButtonDown("Shoot") && Gun.activeSelf)
+        {
+            Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);
+
+        }
+    }
+}
