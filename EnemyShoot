@@ -1,0 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyShoot : MonoBehaviour
+{
+    public float moveSpeed;
+    public Rigidbody2D rb;
+    private float moveDirection;
+    private bool facingRight = true;
+    public Transform player;
+
+    public float lineofSite;
+    public float shootingRange;
+    public GameObject bullet;
+    public GameObject bulletParent;
+    public float fireRate = 1f;
+    private float nextFireTime;
+
+    public float health = 40f;
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    void Update()
+    {
+        float distanceFromPlayer = Vector2.Distance(player.position, transform.position);
+        if(distanceFromPlayer <= shootingRange && nextFireTime  < Time.time)
+        {
+            Instantiate(bullet, bulletParent.transform.position, Quaternion.identity);
+            nextFireTime = Time.time + fireRate;
+        }
+        FlipToPlayer();
+        Debug.Log(health);
+    }
+
+    void Flip()
+    {
+        moveDirection *= -1;
+        facingRight = !facingRight;
+        transform.Rotate(0, 180, 0);
+    }
+
+    void FlipToPlayer()
+    {
+        float playerPosition = player.position.x - transform.position.x;
+        if (playerPosition < 0 && facingRight)
+        {
+            Flip();
+        }
+        else if (playerPosition > 0 && !facingRight)
+        {
+            Flip();
+        }
+    }
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+}
