@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PickUp : MonoBehaviour
+{
+    public GameObject PickGun;
+    public GameObject PlayerGun;
+    public GameObject PowerGun;
+
+    public GameObject PickDJump;
+    public GameObject PlayerDJump;
+
+    public GameObject PickSlide;
+    public GameObject PlayerSlide;
+
+    public GameObject PickWJump;
+    public GameObject PlayerWJump;
+
+    void Start()
+    {
+        PlayerGun.SetActive(false);
+        PowerGun.SetActive(false);
+        PlayerDJump.SetActive(false);
+        PlayerSlide.SetActive(false);
+        PlayerWJump.SetActive(false);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.transform.CompareTag("Gun"))
+        {
+            PickGun.SetActive(false);
+            PlayerGun.SetActive(true);
+            PowerGun.SetActive(true);
+        }
+        if (other.transform.CompareTag("DJump"))
+        {
+            PickDJump.SetActive(false);
+            PlayerDJump.SetActive(true);
+        }
+        if (other.transform.CompareTag("Slide"))
+        {
+            PickSlide.SetActive(false);
+            PlayerSlide.SetActive(true);
+        }
+        if (other.transform.CompareTag("WJump"))
+        {
+            PickWJump.SetActive(false);
+            PlayerWJump.SetActive(true);
+        }
+    }
+}
